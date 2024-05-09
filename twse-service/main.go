@@ -5,17 +5,18 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
-	"ledger-backend/twse-service/domain"
-	"ledger-backend/twse-service/firestore"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/cdxvy30/foliage/twse-service/domain"
+	"github.com/cdxvy30/foliage/twse-service/firestore"
 )
 
-const API_URL = "https://mis.twse.com.tw/stock/api/getStockInfo.jsp"
+const API_URL = "https://mis.twse.com.tw/stock/api/getOddInfo.jsp"
 
 func main() {
 	ticker := time.NewTicker(10 * time.Second)
@@ -32,7 +33,12 @@ func fetchData() {
 	firestore_client := firestore.CreateClient(ctx)
 	defer firestore_client.Close()
 
-	file, err := os.Open("/Users/cdxvy30/Downloads/stock_list.csv")
+	filePath := os.Getenv("STOCK_LIST_PATH")
+	if filePath == "" {
+		filePath = "./data/stock_list.csv" // default path
+	}
+	file, err := os.Open(filePath)
+
 	if err != nil {
 		log.Fatal("Error opening CSV file:", err)
 	}

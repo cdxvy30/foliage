@@ -3,8 +3,9 @@ package firestore
 import (
 	"context"
 	"fmt"
-	"ledger-backend/twse-service/domain"
 	"log"
+
+	"github.com/cdxvy30/foliage/twse-service/domain"
 
 	"cloud.google.com/go/firestore"
 	"google.golang.org/api/iterator"

@@ -1,4 +1,4 @@
-module ledger-backend
+module github.com/cdxvy30/foliage
 
 go 1.20
 
