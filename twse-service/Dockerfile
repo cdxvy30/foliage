@@ -4,13 +4,19 @@ WORKDIR /src
 COPY . /src
 WORKDIR /src/twse-service
 
-RUN cd /src && go build -o proxy ./*.go
+RUN cd /src && go build -o proxy ./twse-service/*.go
 
-FROM alpine:3.16
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
+COPY --from=build-env /src/twse-service/data/mis.twse.com.tw.cer /usr/local/share/ca-certificates/mis.twse.com.tw.crt
+
+RUN update-ca-certificates
 
 WORKDIR /app
 ENV STOCK_LIST_PATH="/app/data/stock_list.csv"
 COPY --from=build-env /src/proxy /app/proxy
-COPY --from=build-env /src/data /app/data
+COPY --from=build-env /src/twse-service/data /app/data
 
 CMD [ "/app/proxy" ]
