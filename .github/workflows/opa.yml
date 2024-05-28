@@ -32,11 +32,11 @@ jobs:
     - name: Build Docker image
       run: |
         cd opa-service
-        docker build -t cdxvy30/opa-service:${{ github.sha }} .
+        docker build -t cdxvy30/opa-service:latest .
 
     - name: Push Docker image to Docker Hub
       run: |
-        docker push cdxvy30/opa-service:${{ github.sha }}
+        docker push cdxvy30/opa-service:latest
 
     - name: Deploy to Cloud Run
       run: |
