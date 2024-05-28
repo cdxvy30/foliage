@@ -1,0 +1,41 @@
+name: OPA Service CI/CD
+
+on:
+  push:
+    paths:
+      - 'opa-service/**'
+
+jobs:
+  build-and-deploy-opa:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: '353.0.0'
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    - name: Configure Docker
+      run: gcloud auth configure-docker
+
+    - name: Build Docker image
+      run: |
+        cd opa-service
+        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/foliage:${{ github.sha }} .
+
+    - name: Push Docker image to Google Artifact Registry
+      run: |
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/foliage:${{ github.sha }}
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy opa-service \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/foliage:${{ github.sha }} \
+          --region ${{ secrets.GCP_REGION }} \
+          --platform managed \
+          --allow-unauthenticated
