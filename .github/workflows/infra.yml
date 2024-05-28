@@ -1,8 +1,0 @@
-name: Services Deployment With Terraform
-
-on:
-  push:
-    branches: [ master ]
-
-jobs:
-  - name
