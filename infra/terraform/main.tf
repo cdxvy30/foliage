@@ -18,24 +18,25 @@ resource "google_cloud_run_v2_job" "job" {
         image = "docker.io/cdxvy30/twse-service-amd-rate1:latest"
         resources {
           limits = {
-            cpu    = "2"
+            cpu    = "1"
             memory = "1024Mi"
           }
         }
       }
+      service_account = var.service_account
     }
   }
 }
 
 resource "google_cloud_run_v2_job_iam_member" "invoker" {
-  name      = google_cloud_run_v2_job.job.name
+  name     = google_cloud_run_v2_job.job.name
   location = google_cloud_run_v2_job.job.location
   role     = "roles/run.invoker"
   member   = "serviceAccount:${var.service_account}"
 }
 
 resource "google_cloud_run_v2_job_iam_member" "admin" {
-  name      = google_cloud_run_v2_job.job.name
+  name     = google_cloud_run_v2_job.job.name
   location = google_cloud_run_v2_job.job.location
   role     = "roles/run.admin"
   member   = "serviceAccount:${var.service_account}"
