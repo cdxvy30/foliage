@@ -2,10 +2,10 @@ name: OPA Service CI/CD
 
 on:
   push:
-    paths:
-      - 'opa-service/**'
     branches:
       - 'infra'
+    # paths:
+    #   - 'opa-service/**'
 
 jobs:
   build-and-deploy-opa:
