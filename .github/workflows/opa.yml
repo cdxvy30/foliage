@@ -29,16 +29,16 @@ jobs:
     - name: Build Docker image
       run: |
         cd opa-service
-        docker build -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/foliage/opa-service:${{ github.sha }} .
+        docker build -t cdxvy30/opa-service:${{ github.sha }} .
 
-    - name: Push Docker image to Google Artifact Registry
+    - name: Push Docker image to Docker Hub
       run: |
-        docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/foliage/opa-service:${{ github.sha }}
+        docker push cdxvy30/opa-service:${{ github.sha }}
 
     - name: Deploy to Cloud Run
       run: |
         gcloud run deploy opa-service \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/foliage:${{ github.sha }} \
+          --image docker.io/cdxvy30/opa-service:${{ github.sha }} \
           --region ${{ secrets.GCP_REGION }} \
           --platform managed \
           --allow-unauthenticated
