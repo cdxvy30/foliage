@@ -33,7 +33,7 @@ jobs:
 
     - name: Push Docker image to Google Artifact Registry
       run: |
-        docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/foliage/opa-service:${{ github.sha }} .
+        docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/foliage/opa-service:${{ github.sha }}
 
     - name: Deploy to Cloud Run
       run: |
