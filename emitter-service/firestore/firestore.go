@@ -12,7 +12,7 @@ import (
 )
 
 func CreateClient(ctx context.Context) *firestore.Client {
-	projectID := "foliage-96964"
+	projectID := "saas-platform-lab"
 
 	client, err := firestore.NewClient(ctx, projectID)
 	if err != nil {

@@ -1,3 +1,16 @@
 .DS_Store
 /mq-service
 /lib/mq
+
+# Terraform
+*.terraform/
+*.lock.hcl
+*.json
+*.out
+*.tfstate
+*.backup
+variables.tf
+tf_apply.sh
+
+# Gcloud command
+example.cmd
