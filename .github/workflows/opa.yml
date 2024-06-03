@@ -40,7 +40,7 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run deploy opa-service \
+        gcloud run deploy opa-service-from-ga \
           --image docker.io/cdxvy30/opa-service:latest \
           --region ${{ secrets.GCP_REGION }} \
           --platform managed \
