@@ -18,7 +18,7 @@ jobs:
     - name: Google Cloud Auth
       uses: google-github-actions/auth@v1
       with:
-        credentials_json: ${{ secrets.GCP_SA_DEVELOPER }}
+        credentials_json: ${{ secrets.GCP_OPA_DEVELOPER }}
 
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
@@ -40,8 +40,9 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run deploy opa-service \
+        gcloud run deploy opa-service-from-ga \
           --image docker.io/cdxvy30/opa-service:latest \
           --region ${{ secrets.GCP_REGION }} \
+          --port 8181 \
           --platform managed \
           --allow-unauthenticated
