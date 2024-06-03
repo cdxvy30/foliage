@@ -43,5 +43,6 @@ jobs:
         gcloud run deploy opa-service-from-ga \
           --image docker.io/cdxvy30/opa-service:latest \
           --region ${{ secrets.GCP_REGION }} \
+          --port 8181 \
           --platform managed \
           --allow-unauthenticated
