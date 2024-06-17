@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 	"github.com/redis/go-redis/v9"
@@ -27,7 +28,11 @@ func main() {
 	})
 
 	go func() {
-		sub := redisClient.Subscribe(ctx, "stockUpdates")
+		sub, err := redisClient.Subscribe(ctx, "stockUpdates")
+		if err != nil {
+			log.Fatalf("Failed to subscribe to Redis: %v", err)
+		}
+		defer sub.Close()
 		ch := sub.Channel()
 
 		for msg := range ch {
@@ -51,6 +56,8 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalf("Failed to upgrade connection: %v", err)
 	}
+	logger := log.New(os.Stdout, "", log.LstdFlags)
+	logger.Printf("Client connected: %s", ws.RemoteAddr())
 	defer ws.Close()
 
 	clients[ws] = true

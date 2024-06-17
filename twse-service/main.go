@@ -102,6 +102,9 @@ func fetchData() {
 
 		for i := range batchData.MsgArray {
 			tlongStr := batchData.MsgArray[i].DataUpdatedTime
+			if tlongStr == "" {
+				continue
+			}
 			tlongInt, err := strconv.ParseInt(tlongStr, 10, 64)
 			if err != nil {
 				log.Fatalf("Failed to convert tlong to int64: %v", err)
